@@ -3,13 +3,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Sparkles } from "lucide-react";
 import { NAV_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <aside className="fixed left-0 top-0 h-full w-64 bg-card border-r flex flex-col">
@@ -38,7 +46,11 @@ export default function Sidebar() {
         })}
       </nav>
       <div className="p-4 border-t">
-        <WalletMultiButton />
+        {isClient ? (
+          <WalletMultiButton />
+        ) : (
+          <Skeleton className="w-full h-10 rounded-md" />
+        )}
       </div>
     </aside>
   );
