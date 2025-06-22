@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowDown, QrCode, Send, Settings2, History, RefreshCw, Loader2, AlertTriangle, Calendar, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -140,7 +141,9 @@ export default function SwapCard() {
                 </TabsList>
                 <div className="flex gap-1">
                     <Button variant="ghost" size="icon" onClick={() => setScanModalOpen(true)}><QrCode className="h-5 w-5"/></Button>
-                    <Button variant="ghost" size="icon"><History className="h-5 w-5"/></Button>
+                    <Button asChild variant="ghost" size="icon">
+                        <Link href="/transactions"><History className="h-5 w-5"/></Link>
+                    </Button>
                     <Button variant="ghost" size="icon"><Settings2 className="h-5 w-5"/></Button>
                 </div>
             </div>

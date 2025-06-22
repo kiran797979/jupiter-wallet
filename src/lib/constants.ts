@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, Send, Vote, BotMessageSquare, Rocket } from "lucide-react";
+import { LayoutDashboard, Send, Vote, BotMessageSquare, Rocket, History, PiggyBank, Image as ImageIcon } from "lucide-react";
 
 export type NavLink = {
   name: string;
@@ -11,6 +11,9 @@ export const NAV_LINKS: NavLink[] = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'Swap', href: '/swap', icon: Send },
     { name: 'Buy Crypto', href: '/buy', icon: Rocket },
+    { name: 'NFT Portfolio', href: '/portfolio', icon: ImageIcon },
+    { name: 'Transactions', href: '/transactions', icon: History },
+    { name: 'Staking', href: '/staking', icon: PiggyBank },
     { name: 'Governance', href: '/governance', icon: Vote },
     { name: 'Fee Advisor', href: '/fee-advisor', icon: BotMessageSquare },
 ];
@@ -126,4 +129,53 @@ export type Order = {
 export const ACTIVE_ORDERS: Order[] = [
     { id: '1', type: 'Limit', fromToken: TOKENS[1], toToken: TOKENS[0], amount: 100, details: 'at $150/SOL' },
     { id: '2', type: 'DCA', fromToken: TOKENS[1], toToken: TOKENS[2], amount: 50, details: 'daily for 7 days' },
+];
+
+export type Nft = {
+  id: string;
+  name: string;
+  collection: string;
+  imageUrl: string;
+};
+
+export const MOCK_NFTS: Nft[] = [
+  { id: '1', name: 'Solana Monkey #1355', collection: 'Solana Monkey Business', imageUrl: 'https://placehold.co/600x600.png' },
+  { id: '2', name: 'DeGod #7037', collection: 'DeGods', imageUrl: 'https://placehold.co/600x600.png' },
+  { id: '3', name: 'Cyber Samurai #888', collection: 'The Fracture', imageUrl: 'https://placehold.co/600x600.png' },
+  { id: '4', name: 'Quantum Orb #42', collection: 'Quantum Art', imageUrl: 'https://placehold.co/600x600.png' },
+];
+
+
+export type Transaction = {
+  id: string;
+  type: 'Send' | 'Receive' | 'Swap' | 'Contract Execution';
+  status: 'Completed' | 'Pending' | 'Failed';
+  date: string;
+  details: string;
+  address: string;
+  amount: string;
+};
+
+export const MOCK_TRANSACTIONS: Transaction[] = [
+  { id: '1', type: 'Swap', status: 'Completed', date: '2024-08-01', details: 'SOL to USDC', address: '2…a1', amount: '-1.50 SOL', },
+  { id: '2', type: 'Receive', status: 'Completed', date: '2024-07-30', details: 'From friend.sol', address: '8…b4', amount: '+50.00 USDC', },
+  { id: '3', type: 'Send', status: 'Pending', date: '2024-07-29', details: 'To charity.sol', address: 'C…d9', amount: '-10.00 USDC', },
+  { id: '4', type: 'Contract Execution', status: 'Completed', date: '2024-07-28', details: 'Minted NFT', address: 'M…3a', amount: '-0.50 SOL', },
+  { id: '5', type: 'Swap', status: 'Failed', date: '2024-07-27', details: 'USDC to JUP', address: 'J…ag', amount: '0.00 USDC', },
+];
+
+export type StakingPool = {
+    id: string;
+    name: string;
+    token: string;
+    iconUrl: string;
+    apy: number;
+    staked: number;
+    capacityUsed: number;
+};
+
+export const MOCK_STAKING_POOLS: StakingPool[] = [
+    { id: '1', name: 'Jupiter Staking', token: 'JUP', iconUrl: TOKENS[3].iconUrl, apy: 12.5, staked: 15000000, capacityUsed: 75 },
+    { id: '2', name: 'Solana Liquid Staking', token: 'SOL', iconUrl: TOKENS[0].iconUrl, apy: 7.2, staked: 50000000, capacityUsed: 90 },
+    { id: '3', name: 'USDC Vault', token: 'USDC', iconUrl: TOKENS[1].iconUrl, apy: 5.8, staked: 25000000, capacityUsed: 60 },
 ];
