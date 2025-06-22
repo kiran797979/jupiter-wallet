@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { Html5QrcodeScanner, Html5QrcodeScannerState } from "html5-qrcode";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +9,13 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { QrCode, CheckCircle } from "lucide-react";
+import { QrCode, CheckCircle, AlertTriangle, CameraOff } from "lucide-react";
 import { TOKENS } from "@/lib/constants";
 import type { Token } from "@/lib/constants";
-import { Progress } from "@/components/ui/progress";
 import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+
 
 type MagicScanModalProps = {
   isOpen: boolean;
@@ -20,34 +23,85 @@ type MagicScanModalProps = {
   onTokenScanned: (token: Token) => void;
 };
 
+const qrcodeRegionId = "html5qr-code-full-region";
+
 export function MagicScanModal({ isOpen, onOpenChange, onTokenScanned }: MagicScanModalProps) {
-  const [scanStatus, setScanStatus] = useState<"scanning" | "detected">("scanning");
-  const [progress, setProgress] = useState(0);
+  const [scanResult, setScanResult] = useState<Token | null>(null);
+  const [hasCameraPermission, setHasCameraPermission] = useState(true);
+  const { toast } = useToast();
+  
+  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (isOpen) {
-      setScanStatus("scanning");
-      setProgress(0);
-      
-      const interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            setScanStatus("detected");
-            // Simulate detecting the JUP token
-            const detectedToken = TOKENS.find(t => t.ticker === "JUP")!;
-            onTokenScanned(detectedToken);
-            setTimeout(() => onOpenChange(false), 2000);
-            return 100;
-          }
-          return prev + 10;
-        });
-      }, 200);
-
-      return () => clearInterval(interval);
+    if (!isOpen) {
+      return;
     }
-  }, [isOpen, onOpenChange, onTokenScanned]);
+
+    setScanResult(null);
+    setHasCameraPermission(true);
+
+    const cleanupScanner = () => {
+       if (scannerRef.current && scannerRef.current.getState() === Html5QrcodeScannerState.SCANNING) {
+        scannerRef.current.clear().catch(error => {
+            console.error("Failed to clear html5-qrcode scanner.", error);
+        });
+        scannerRef.current = null;
+      }
+    }
+
+    navigator.mediaDevices?.getUserMedia({ video: true })
+      .then(() => {
+        setHasCameraPermission(true);
+        
+        const scanner = new Html5QrcodeScanner(
+          qrcodeRegionId,
+          { qrbox: { width: 250, height: 250 }, fps: 5, rememberLastUsedCamera: true },
+          false
+        );
+        scannerRef.current = scanner;
+
+        const onScanSuccess = (decodedText: string) => {
+          cleanupScanner();
+
+          const foundToken = TOKENS.find(t => t.address.toLowerCase() === decodedText.toLowerCase());
+
+          if (foundToken) {
+            setScanResult(foundToken);
+            onTokenScanned(foundToken);
+            toast({
+              title: "Token Detected!",
+              description: `${foundToken.name} (${foundToken.ticker}) was added.`
+            });
+            setTimeout(() => onOpenChange(false), 2000);
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Scan Error",
+              description: "Invalid or unsupported token QR code.",
+            });
+            onOpenChange(false);
+          }
+        };
+
+        const onScanFailure = (error: any) => { /* ignore */ };
+        
+        setTimeout(() => {
+          if (document.getElementById(qrcodeRegionId)) {
+            scanner.render(onScanSuccess, onScanFailure);
+          }
+        }, 300);
+
+      })
+      .catch((err) => {
+        console.error("Camera permission denied:", err);
+        setHasCameraPermission(false);
+      });
+
+    return () => {
+      cleanupScanner();
+    };
+  }, [isOpen, onOpenChange, onTokenScanned, toast]);
+
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -61,33 +115,32 @@ export function MagicScanModal({ isOpen, onOpenChange, onTokenScanned }: MagicSc
             Point your camera at a token contract QR code.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col items-center justify-center h-64 bg-secondary rounded-lg overflow-hidden relative">
-          {scanStatus === "scanning" ? (
-            <>
-              <div className="w-48 h-48 border-4 border-dashed border-primary rounded-lg" />
-              <div className="absolute top-0 left-0 w-full h-1 bg-primary/50 animate-pulse" style={{ animation: 'scan 2s infinite linear' }} />
-              <p className="mt-4 text-muted-foreground">Scanning for token...</p>
-              <Progress value={progress} className="w-3/4 mt-2" />
-            </>
-          ) : (
+        <div className="flex flex-col items-center justify-center min-h-[320px] bg-secondary rounded-lg overflow-hidden relative p-4">
+          {!hasCameraPermission ? (
+            <div className="flex flex-col items-center gap-4 text-center">
+              <CameraOff className="h-16 w-16 text-destructive" />
+              <Alert variant="destructive">
+                <AlertTriangle className="h-4 w-4" />
+                <AlertTitle>Camera Access Denied</AlertTitle>
+                <AlertDescription>
+                  Please enable camera permissions in your browser settings to use Magic Scan.
+                </AlertDescription>
+              </Alert>
+            </div>
+          ) : scanResult ? (
             <div className="flex flex-col items-center gap-4 text-center">
               <CheckCircle className="h-16 w-16 text-green-500" />
               <h3 className="text-xl font-semibold">Token Detected!</h3>
               <div className="flex items-center gap-2 p-2 rounded-md bg-background">
-                 <Image src={TOKENS.find(t => t.ticker === 'JUP')!.iconUrl} alt="JUP" width={24} height={24} className="rounded-full" />
-                 <p className="font-bold">Jupiter (JUP)</p>
+                 <Image src={scanResult.iconUrl} alt={scanResult.ticker} width={24} height={24} className="rounded-full" />
+                 <p className="font-bold">{scanResult.name} ({scanResult.ticker})</p>
               </div>
             </div>
+          ) : (
+            <div id={qrcodeRegionId} className="w-full" />
           )}
         </div>
       </DialogContent>
-      <style jsx global>{`
-        @keyframes scan {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(250px); }
-            100% { transform: translateY(0); }
-        }
-      `}</style>
     </Dialog>
   );
 }
