@@ -31,11 +31,12 @@ const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     
     const onError = useCallback(
         (error: WalletError) => {
-            console.error(error);
             // Silently handle the WalletNotReadyError, which can happen on page load with autoConnect.
             if (error.name === 'WalletNotReadyError') {
                 return;
             }
+            
+            console.error(error);
             toast({
                 variant: 'destructive',
                 title: 'Wallet Error',
