@@ -129,7 +129,7 @@ export default function SwapCard() {
 
   return (
     <>
-      <Card className="w-full">
+      <Card className="w-full transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
         <Tabs defaultValue="market">
           <CardHeader>
             <div className="flex justify-between items-center">

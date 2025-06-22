@@ -38,40 +38,42 @@ export default function Leaderboard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[80px] text-center">Rank</TableHead>
-              <TableHead>Trader</TableHead>
-              <TableHead className="text-right">Fees Saved (USDC)</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {LEADERBOARD_DATA.map((entry) => (
-              <TableRow key={entry.rank}>
-                <TableCell className="font-bold text-lg text-center">
-                  {getRankIndicator(entry.rank)}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <Image
-                      src={entry.avatarUrl}
-                      alt={entry.trader}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                    <span className="font-medium">{entry.trader}</span>
-                    {entry.rank === 1 && <Badge variant="destructive" className="bg-yellow-500 hover:bg-yellow-500/80">King</Badge>}
-                  </div>
-                </TableCell>
-                <TableCell className="text-right font-mono text-primary font-semibold">
-                  +${entry.feesSaved.toFixed(2)}
-                </TableCell>
+        <div className="overflow-x-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[80px] text-center">Rank</TableHead>
+                <TableHead>Trader</TableHead>
+                <TableHead className="text-right">Fees Saved (USDC)</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {LEADERBOARD_DATA.map((entry) => (
+                <TableRow key={entry.rank}>
+                  <TableCell className="font-bold text-lg text-center">
+                    {getRankIndicator(entry.rank)}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={entry.avatarUrl}
+                        alt={entry.trader}
+                        width={40}
+                        height={40}
+                        className="rounded-full"
+                      />
+                      <span className="font-medium">{entry.trader}</span>
+                      {entry.rank === 1 && <Badge variant="destructive" className="bg-yellow-500 hover:bg-yellow-500/80">King</Badge>}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right font-mono text-primary font-semibold">
+                    +${entry.feesSaved.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

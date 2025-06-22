@@ -11,7 +11,7 @@ export default function GovernanceClientPage() {
 
   return (
     <>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <PageHeader
           title="Governance Portal"
           description="View and create proposals for the Jupiter DAO."

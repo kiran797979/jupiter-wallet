@@ -20,7 +20,7 @@ export default function Sidebar() {
   }, []);
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-card border-r flex flex-col">
+    <aside className="w-full bg-card border-b md:border-b-0 md:border-r md:h-screen md:w-64 flex flex-col md:sticky md:top-0">
       <div className="p-6">
         <Link href="/" className="flex items-center gap-2">
           <Sparkles className="h-8 w-8 text-primary" />
