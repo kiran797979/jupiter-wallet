@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, Send, Vote, BotMessageSquare, PlusCircle } from "lucide-react";
+import { LayoutDashboard, Send, Vote, BotMessageSquare, CreditCard } from "lucide-react";
 
 export type NavLink = {
   name: string;
@@ -10,6 +10,7 @@ export type NavLink = {
 export const NAV_LINKS: NavLink[] = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'Swap', href: '/swap', icon: Send },
+    { name: 'Buy Crypto', href: '/buy', icon: CreditCard },
     { name: 'Governance', href: '/governance', icon: Vote },
     { name: 'Fee Advisor', href: '/fee-advisor', icon: BotMessageSquare },
 ];
@@ -25,6 +26,7 @@ export type Token = {
 export const TOKENS: Token[] = [
   { name: 'Solana', ticker: 'SOL', iconUrl: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png', address: 'So11111111111111111111111111111111111111112', decimals: 9 },
   { name: 'USD Coin', ticker: 'USDC', iconUrl: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v/logo.png', address: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', decimals: 6 },
+  { name: 'Indian Rupee', ticker: 'INR', iconUrl: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB/logo.png', address: 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', decimals: 6 },
   { name: 'Jupiter', ticker: 'JUP', iconUrl: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png', address: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN', decimals: 6 },
   { name: 'Bonk', ticker: 'BONK', iconUrl: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263/logo.png', address: 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', decimals: 5 },
   { name: 'Wormhole', ticker: 'W', iconUrl: 'https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ/logo.png', address: '85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ', decimals: 6 },
