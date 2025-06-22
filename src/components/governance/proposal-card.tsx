@@ -63,7 +63,7 @@ export default function ProposalCard({proposal}: ProposalCardProps) {
   const currentStatus = statusConfig[proposal.status];
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col transition-all duration-300 hover:border-primary hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
       <CardHeader>
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg leading-tight">{proposal.title}</CardTitle>

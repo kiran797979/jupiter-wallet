@@ -27,7 +27,7 @@ const getRankIndicator = (rank: number) => {
 
 export default function Leaderboard() {
   return (
-    <Card>
+    <Card className="transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="h-6 w-6 text-yellow-500" />

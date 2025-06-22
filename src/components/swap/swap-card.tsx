@@ -304,7 +304,7 @@ export default function SwapCard() {
 
         </Tabs>
       </Card>
-      <Card>
+      <Card className="transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10">
         <CardHeader>
             <CardTitle>Active Orders</CardTitle>
         </CardHeader>

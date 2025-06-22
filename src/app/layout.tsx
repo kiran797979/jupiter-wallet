@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -25,7 +25,9 @@ export default function RootLayout({
           <Sidebar />
           <div className="flex-1 flex flex-col ml-64">
             <main className="flex-1 p-6 lg:p-8">
-              {children}
+              <div className="animate-fade-in-up">
+                {children}
+              </div>
             </main>
           </div>
         </div>
