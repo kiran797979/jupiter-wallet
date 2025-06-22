@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, Send, Vote, BotMessageSquare, Sparkles } from "lucide-react";
+import { LayoutDashboard, Send, Vote, BotMessageSquare, PlusCircle } from "lucide-react";
 
 export type NavLink = {
   name: string;
