@@ -57,3 +57,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .wallet-adapter-button-trigger {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 w-full justify-center rounded-md h-10 font-medium transition-colors;
+  }
+
+  .wallet-adapter-button-trigger:disabled {
+    @apply opacity-50 pointer-events-none;
+  }
+  
+  .wallet-adapter-modal-wrapper {
+      @apply bg-black/80;
+  }
+  .wallet-adapter-modal-container {
+      @apply bg-card shadow-none rounded-lg border;
+  }
+  .wallet-adapter-modal-title {
+      @apply text-foreground text-lg font-semibold;
+  }
+  .wallet-adapter-modal-list .wallet-adapter-button {
+      @apply bg-secondary text-secondary-foreground rounded-lg text-base;
+  }
+
+  .wallet-adapter-modal-list .wallet-adapter-button:hover {
+      @apply bg-accent text-accent-foreground;
+  }
+
+  .wallet-adapter-modal-button-close {
+      @apply bg-transparent;
+  }
+
+  .wallet-adapter-modal-button-close:hover {
+      @apply bg-secondary;
+  }
+}
