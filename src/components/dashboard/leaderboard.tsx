@@ -18,6 +18,13 @@ import { Badge } from "@/components/ui/badge";
 import { LEADERBOARD_DATA } from "@/lib/constants";
 import { Trophy } from "lucide-react";
 
+const getRankIndicator = (rank: number) => {
+  if (rank === 1) return "🥇";
+  if (rank === 2) return "🥈";
+  if (rank === 3) return "🥉";
+  return rank;
+};
+
 export default function Leaderboard() {
   return (
     <Card>
@@ -34,7 +41,7 @@ export default function Leaderboard() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[80px]">Rank</TableHead>
+              <TableHead className="w-[80px] text-center">Rank</TableHead>
               <TableHead>Trader</TableHead>
               <TableHead className="text-right">Fees Saved (USDC)</TableHead>
             </TableRow>
@@ -42,10 +49,8 @@ export default function Leaderboard() {
           <TableBody>
             {LEADERBOARD_DATA.map((entry) => (
               <TableRow key={entry.rank}>
-                <TableCell className="font-medium">
-                  <div className="flex items-center justify-center h-8 w-8 rounded-full bg-secondary text-secondary-foreground">
-                    {entry.rank}
-                  </div>
+                <TableCell className="font-bold text-lg text-center">
+                  {getRankIndicator(entry.rank)}
                 </TableCell>
                 <TableCell>
                   <div className="flex items-center gap-3">
@@ -60,8 +65,8 @@ export default function Leaderboard() {
                     {entry.rank === 1 && <Badge variant="destructive" className="bg-yellow-500 hover:bg-yellow-500/80">King</Badge>}
                   </div>
                 </TableCell>
-                <TableCell className="text-right font-mono text-green-600">
-                  ${entry.feesSaved.toFixed(2)}
+                <TableCell className="text-right font-mono text-primary font-semibold">
+                  +${entry.feesSaved.toFixed(2)}
                 </TableCell>
               </TableRow>
             ))}
