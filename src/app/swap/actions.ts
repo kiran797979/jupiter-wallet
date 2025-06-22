@@ -30,7 +30,7 @@ export async function getQuote(
   // Jupiter API expects amount in base units
   const amountInBaseUnits = Math.round(amount * 10 ** fromToken.decimals);
 
-  const url = new URL("https://quote-api.jup.ag/v6/quote");
+  const url = new URL("https://lite-api.jup.ag/swap/v1/quote");
   url.searchParams.append("inputMint", fromToken.address);
   url.searchParams.append("outputMint", toToken.address);
   url.searchParams.append("amount", amountInBaseUnits.toString());
@@ -55,7 +55,8 @@ export async function getQuote(
     const outAmount = Number(data.outAmount) / (10 ** toToken.decimals);
     
     let jupiterFeePct = 0;
-    if (data.marketInfos) {
+    // The lite-api might not return marketInfos, so we check for it.
+    if (data.marketInfos && Array.isArray(data.marketInfos)) {
       jupiterFeePct = data.marketInfos.reduce((acc: number, mi: any) => acc + (mi.lpFee?.pct || 0), 0);
     }
 
