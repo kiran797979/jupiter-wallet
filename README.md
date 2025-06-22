@@ -41,3 +41,4 @@ You can access the live website here: [Link to Live Website (Replace with actual
 ## Contributing
 
 [Provide guidelines for contributing to the project]
+# jupiter-wallet
