@@ -14,7 +14,7 @@ export default function BuyPage() {
         <Info className="h-4 w-4" />
         <AlertTitle>Developer Note</AlertTitle>
         <AlertDescription>
-          This feature requires a Transak API key. Please add your own key to the <code>.env</code> file to enable the widget.
+          This feature requires a Transak API key. Please copy the <code>.env.example</code> file to <code>.env</code> and add your key to enable the widget.
         </AlertDescription>
       </Alert>
       <TransakWidget />

@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function TransakWidget() {
   const transakApiKey = process.env.NEXT_PUBLIC_TRANSAK_API_KEY;
@@ -8,15 +8,13 @@ export default function TransakWidget() {
   if (!transakApiKey || transakApiKey === "YOUR_TRANSAK_API_KEY_HERE") {
     return (
       <Card className="flex items-center justify-center h-[625px]">
-        <CardHeader>
+        <CardHeader className="text-center">
           <CardTitle>Transak Widget Unavailable</CardTitle>
-          <CardContent className="pt-4">
-            <p className="text-muted-foreground text-center">
-              Please configure your Transak API key in the <code>.env</code> file
-              <br />
-              to use this feature.
-            </p>
-          </CardContent>
+          <CardDescription className="pt-4">
+            Please configure your Transak API key.
+            <br />
+            Copy <code>.env.example</code> to <code>.env</code> and add your key to get started.
+          </CardDescription>
         </CardHeader>
       </Card>
     );
