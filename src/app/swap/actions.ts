@@ -7,6 +7,8 @@ import type { Token } from "@/lib/constants";
 export type QuoteResponse = {
   outAmount: string;
   priceImpactPct: string;
+  jupiterFeePct: number;
+  marketInfos: any[];
 };
 
 export async function getQuote(
@@ -52,10 +54,17 @@ export async function getQuote(
     
     const outAmount = Number(data.outAmount) / (10 ** toToken.decimals);
     
+    let jupiterFeePct = 0;
+    if (data.marketInfos) {
+      jupiterFeePct = data.marketInfos.reduce((acc: number, mi: any) => acc + (mi.lpFee?.pct || 0), 0);
+    }
+
     return {
       quote: {
         outAmount: outAmount.toString(),
         priceImpactPct: data.priceImpactPct,
+        jupiterFeePct,
+        marketInfos: data.marketInfos || [],
       },
       error: null,
     };

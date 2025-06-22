@@ -18,6 +18,7 @@ import { MagicScanModal } from "./magic-scan-modal";
 import { useToast } from "@/hooks/use-toast";
 import { useDebounce } from "@/hooks/use-debounce";
 import { getQuote, type QuoteResponse } from "@/app/swap/actions";
+import FeeTransparencyMeter from "./fee-transparency-meter";
 
 export default function SwapCard() {
   const [fromToken, setFromToken] = useState<Token>(TOKENS[0]);
@@ -165,6 +166,9 @@ export default function SwapCard() {
                     <Input className="w-3/5 h-16 text-2xl font-mono text-right" placeholder="0" value={toAmount} readOnly />
                 </div>
               </div>
+              
+              <FeeTransparencyMeter quote={quote} fromAmount={fromAmount} />
+
                {quoteError && (
                 <Alert variant="destructive">
                   <AlertTriangle className="h-4 w-4" />
