@@ -1,7 +1,7 @@
 'use client';
 
-import {useEffect} from 'react';
-import {useFormState, useFormStatus} from 'react-dom';
+import {useEffect, useActionState} from 'react';
+import {useFormStatus} from 'react';
 import {
   Dialog,
   DialogContent,
@@ -49,7 +49,7 @@ export default function CreateProposalDialog({
   isOpen,
   onOpenChange,
 }: CreateProposalDialogProps) {
-  const [state, formAction] = useFormState(createProposal, initialState);
+  const [state, formAction] = useActionState(createProposal, initialState);
   const {toast} = useToast();
 
   useEffect(() => {

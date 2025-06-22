@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react";
 import {
   Card,
   CardContent,
@@ -38,7 +38,7 @@ function SubmitButton() {
 }
 
 export default function FeeRecommendationCard() {
-  const [state, formAction] = useFormState(getFeeSavingAdvice, initialState);
+  const [state, formAction] = useActionState(getFeeSavingAdvice, initialState);
 
   return (
     <Card>
