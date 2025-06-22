@@ -5,7 +5,7 @@ import { Send } from "lucide-react";
 
 export default function WelcomeBanner() {
   return (
-    <Card className="bg-primary/10 border-primary/20 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
+    <Card>
       <CardHeader>
         <CardTitle className="text-2xl text-primary">Ready for Ultra-Fast Swaps?</CardTitle>
         <CardDescription className="text-primary/80">

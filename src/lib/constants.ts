@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, Send, Vote, BotMessageSquare, CreditCard } from "lucide-react";
+import { LayoutDashboard, Send, Vote, BotMessageSquare, Rocket } from "lucide-react";
 
 export type NavLink = {
   name: string;
@@ -10,7 +10,7 @@ export type NavLink = {
 export const NAV_LINKS: NavLink[] = [
     { name: 'Dashboard', href: '/', icon: LayoutDashboard },
     { name: 'Swap', href: '/swap', icon: Send },
-    { name: 'Buy Crypto', href: '/buy', icon: CreditCard },
+    { name: 'Buy Crypto', href: '/buy', icon: Rocket },
     { name: 'Governance', href: '/governance', icon: Vote },
     { name: 'Fee Advisor', href: '/fee-advisor', icon: BotMessageSquare },
 ];

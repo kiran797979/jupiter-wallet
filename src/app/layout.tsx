@@ -5,6 +5,8 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import { Toaster } from "@/components/ui/toaster";
 import Sidebar from '@/components/layout/sidebar';
 import WalletContextProvider from '@/components/providers/wallet-provider';
+import StarryBackground from '@/components/layout/starry-background';
+import AppContainer from '@/components/layout/app-container';
 
 export const metadata: Metadata = {
   title: 'Jupiter Ultra Wallet',
@@ -25,16 +27,19 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <WalletContextProvider>
-          <div className="relative flex min-h-screen flex-col md:flex-row bg-background">
-            <Sidebar />
-            <div className="flex-1 flex flex-col">
-              <main className="flex-1 p-6 lg:p-8">
-                <div className="animate-fade-in-up">
-                  {children}
-                </div>
-              </main>
+          <StarryBackground />
+          <AppContainer>
+            <div className="relative flex min-h-screen flex-col md:flex-row">
+              <Sidebar />
+              <div className="flex-1 flex flex-col">
+                <main className="flex-1 p-6 lg:p-8">
+                  <div className="animate-fade-in-up">
+                    {children}
+                  </div>
+                </main>
+              </div>
             </div>
-          </div>
+          </AppContainer>
           <Toaster />
         </WalletContextProvider>
       </body>

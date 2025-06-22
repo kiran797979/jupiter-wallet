@@ -4,11 +4,11 @@
 
 @layer base {
   :root {
-    --background: 220 20% 7%;
+    --background: 220 20% 5%;
     --foreground: 210 20% 98%;
-    --card: 220 20% 10%;
+    --card: 220 40% 10%;
     --card-foreground: 210 20% 98%;
-    --popover: 220 20% 10%;
+    --popover: 220 40% 8%;
     --popover-foreground: 210 20% 98%;
     --primary: 217 91% 60%;
     --primary-foreground: 210 20% 98%;
@@ -20,7 +20,7 @@
     --accent-foreground: 210 20% 98%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 20% 98%;
-    --border: 215 28% 15%;
+    --border: 217 91% 40%;
     --input: 215 28% 15%;
     --ring: 217 91% 60%;
     --radius: 0.5rem;
@@ -60,7 +60,7 @@
 
 @layer components {
   .wallet-adapter-button-trigger {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 w-full justify-center rounded-md h-10 font-medium transition-colors;
+    @apply bg-transparent border border-primary text-primary-foreground hover:bg-primary/20 w-full justify-center rounded-md h-10 font-medium transition-colors hover:shadow-neon;
   }
 
   .wallet-adapter-button-trigger:disabled {
@@ -68,10 +68,10 @@
   }
   
   .wallet-adapter-modal-wrapper {
-      @apply bg-black/80;
+      @apply bg-black/80 backdrop-blur-sm;
   }
   .wallet-adapter-modal-container {
-      @apply bg-card shadow-none rounded-lg border;
+      @apply bg-card/80 backdrop-blur-md shadow-neon rounded-lg border;
   }
   .wallet-adapter-modal-title {
       @apply text-foreground text-lg font-semibold;
@@ -81,11 +81,11 @@
   }
 
   .wallet-adapter-modal-list .wallet-adapter-button:hover {
-      @apply bg-accent text-accent-foreground;
+      @apply bg-primary/20 text-accent-foreground border-primary/50 border;
   }
 
   .wallet-adapter-modal-button-close {
-      @apply bg-transparent;
+      @apply bg-transparent rounded-full;
   }
 
   .wallet-adapter-modal-button-close:hover {

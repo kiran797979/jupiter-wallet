@@ -70,6 +70,10 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      boxShadow: {
+        'neon': '0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary) / 0.5)',
+        'neon-lg': '0 0 15px hsl(var(--primary)), 0 0 30px hsl(var(--primary) / 0.6)',
+      },
       keyframes: {
         'accordion-down': {
           from: {
