@@ -1,8 +1,9 @@
+
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ArrowDown, QrCode, RefreshCw, Send, Settings2, History } from "lucide-react";
+import { ArrowDown, QrCode, Send, Settings2, History, RefreshCw, Loader2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -10,28 +11,97 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ACTIVE_ORDERS, TOKENS } from "@/lib/constants";
 import type { Token } from "@/lib/constants";
 import { MagicScanModal } from "./magic-scan-modal";
 import { useToast } from "@/hooks/use-toast";
+import { useDebounce } from "@/hooks/use-debounce";
+import { getQuote, type QuoteResponse } from "@/app/swap/actions";
 
 export default function SwapCard() {
   const [fromToken, setFromToken] = useState<Token>(TOKENS[0]);
   const [toToken, setToToken] = useState<Token>(TOKENS[1]);
-  const [fromAmount, setFromAmount] = useState<number | string>("");
-  const [toAmount, setToAmount] = useState<number | string>("1,450.53");
+  const [fromAmount, setFromAmount] = useState<string>("");
+  const [toAmount, setToAmount] = useState<string>("");
   const [isScanModalOpen, setScanModalOpen] = useState(false);
+  const [isFetchingQuote, setIsFetchingQuote] = useState(false);
+  const [quote, setQuote] = useState<QuoteResponse | null>(null);
+  const [quoteError, setQuoteError] = useState<string | null>(null);
+
+  const debouncedFromAmount = useDebounce(fromAmount, 500);
+
   const { toast } = useToast();
 
+  const handleFromTokenChange = (ticker: string) => {
+    const newFromToken = TOKENS.find(t => t.ticker === ticker)!;
+    if (newFromToken.ticker === toToken.ticker) {
+      setToToken(fromToken);
+    }
+    setFromToken(newFromToken);
+  };
+
+  const handleToTokenChange = (ticker: string) => {
+    const newToToken = TOKENS.find(t => t.ticker === ticker)!;
+     if (newToToken.ticker === fromToken.ticker) {
+      setFromToken(toToken);
+    }
+    setToToken(newToToken);
+  };
+  
+  const handleTokenSwitch = () => {
+    const temp = fromToken;
+    setFromToken(toToken);
+    setToToken(temp);
+  };
+
+  const fetchQuote = useCallback(async () => {
+    if (!debouncedFromAmount || parseFloat(debouncedFromAmount) <= 0 || !fromToken || !toToken || fromToken.ticker === toToken.ticker) {
+      setToAmount("");
+      setQuote(null);
+      setQuoteError(null);
+      return;
+    }
+
+    setIsFetchingQuote(true);
+    setQuoteError(null);
+    setQuote(null);
+    const { quote: newQuote, error } = await getQuote(fromToken.ticker, toToken.ticker, parseFloat(debouncedFromAmount));
+
+    if (error) {
+      setQuoteError(error);
+      setToAmount("");
+    } else if (newQuote) {
+      setQuote(newQuote);
+      const formattedAmount = parseFloat(newQuote.outAmount).toLocaleString('en-US', {
+        maximumFractionDigits: toToken.decimals,
+      });
+      setToAmount(formattedAmount.replace(/,/g, ''));
+    }
+    setIsFetchingQuote(false);
+  }, [debouncedFromAmount, fromToken, toToken]);
+
+  useEffect(() => {
+    fetchQuote();
+  }, [fetchQuote]);
+
   const handleSwap = () => {
+    if (!quote || !fromAmount) {
+      toast({
+        variant: "destructive",
+        title: "Swap Failed",
+        description: "Please enter an amount and get a quote before swapping.",
+      });
+      return;
+    }
     toast({
         title: "Swap Submitted!",
-        description: `Swapping ${fromAmount} ${fromToken.ticker} for ${toToken.ticker}.`,
+        description: `Swapping ${fromAmount} ${fromToken.ticker} for ${toAmount} ${toToken.ticker}.`,
     });
   }
 
   const TokenSelector = ({ value, onChange, placeholder }: { value: Token, onChange: (ticker: string) => void, placeholder: string }) => (
-    <Select onValueChange={onChange} defaultValue={value.ticker}>
+    <Select onValueChange={onChange} value={value.ticker}>
       <SelectTrigger className="w-full h-16">
         <SelectValue>
           <div className="flex items-center gap-3">
@@ -80,24 +150,42 @@ export default function SwapCard() {
                 <Label>You pay</Label>
                 <div className="flex gap-2">
                     <div className="w-2/5">
-                        <TokenSelector value={fromToken} onChange={(ticker) => setFromToken(TOKENS.find(t => t.ticker === ticker)!)} placeholder="From" />
+                        <TokenSelector value={fromToken} onChange={handleFromTokenChange} placeholder="From" />
                     </div>
-                    <Input className="w-3/5 h-16 text-2xl font-mono text-right" placeholder="0" value={fromAmount} onChange={(e) => setFromAmount(e.target.value)} />
+                    <Input className="w-3/5 h-16 text-2xl font-mono text-right" placeholder="0" type="number" value={fromAmount} onChange={(e) => setFromAmount(e.target.value)} />
                 </div>
-                <Button variant="outline" size="icon" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full bg-background">
+                <Button variant="outline" size="icon" className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 rounded-full bg-background" onClick={handleTokenSwitch}>
                     <ArrowDown className="h-4 w-4" />
                 </Button>
                  <Label>You receive</Label>
                  <div className="flex gap-2">
                     <div className="w-2/5">
-                        <TokenSelector value={toToken} onChange={(ticker) => setToToken(TOKENS.find(t => t.ticker === ticker)!)} placeholder="To" />
+                        <TokenSelector value={toToken} onChange={handleToTokenChange} placeholder="To" />
                     </div>
                     <Input className="w-3/5 h-16 text-2xl font-mono text-right" placeholder="0" value={toAmount} readOnly />
                 </div>
               </div>
-              <div className="text-xs text-muted-foreground flex justify-between">
-                <span>1 SOL = 145.05 USDC</span>
-                <button className="flex items-center gap-1 text-primary"><RefreshCw className="h-3 w-3" /> Refresh</button>
+               {quoteError && (
+                <Alert variant="destructive">
+                  <AlertTriangle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{quoteError}</AlertDescription>
+                </Alert>
+              )}
+              <div className="text-xs text-muted-foreground flex justify-between h-5 items-center">
+                {isFetchingQuote ? (
+                  <div className="flex items-center gap-2 text-primary animate-pulse">
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Getting best price...</span>
+                  </div>
+                ) : quote ? (
+                  <>
+                    <span>1 {fromToken.ticker} = { (parseFloat(quote.outAmount) / parseFloat(fromAmount)).toFixed(4) } {toToken.ticker}</span>
+                    <button className="flex items-center gap-1 text-primary" onClick={fetchQuote}><RefreshCw className="h-3 w-3" /> Refresh</button>
+                  </>
+                ) : (
+                  <span>Enter an amount to get a quote.</span>
+                )}
               </div>
             </TabsContent>
              <TabsContent value="limit">
@@ -108,9 +196,9 @@ export default function SwapCard() {
             </TabsContent>
           </CardContent>
           <CardFooter>
-            <Button className="w-full text-lg h-12 bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleSwap}>
-                <Send className="mr-2 h-5 w-5"/>
-                Swap
+            <Button className="w-full text-lg h-12 bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleSwap} disabled={isFetchingQuote || !quote}>
+              {isFetchingQuote ? <Loader2 className="animate-spin" /> : <Send className="mr-2 h-5 w-5"/>}
+              Swap
             </Button>
           </CardFooter>
         </Tabs>
