@@ -139,10 +139,18 @@ export type Nft = {
 };
 
 export const MOCK_NFTS: Nft[] = [
-  { id: '1', name: 'Solana Monkey #1355', collection: 'Solana Monkey Business', imageUrl: 'https://placehold.co/600x600.png' },
-  { id: '2', name: 'DeGod #7037', collection: 'DeGods', imageUrl: 'https://placehold.co/600x600.png' },
-  { id: '3', name: 'Cyber Samurai #888', collection: 'The Fracture', imageUrl: 'https://placehold.co/600x600.png' },
-  { id: '4', name: 'Quantum Orb #42', collection: 'Quantum Art', imageUrl: 'https://placehold.co/600x600.png' },
+  { id: '1', name: 'Solana Monkey #1355', collection: 'Solana Monkey Business', imageUrl: 'https://images.unsplash.com/photo-1618172193622-ae2d024f6620?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '2', name: 'DeGod #7037', collection: 'DeGods', imageUrl: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '3', name: 'Cyber Samurai #888', collection: 'The Fracture', imageUrl: 'https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '4', name: 'Quantum Orb #42', collection: 'Quantum Art', imageUrl: 'https://images.unsplash.com/photo-1634986666676-ec8fd927c23d?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '5', name: 'Neon Genesis #21', collection: 'Neon Collective', imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '6', name: 'Galactic Ape #303', collection: 'Galactic Apes', imageUrl: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '7', name: 'Void Walker #77', collection: 'Void Series', imageUrl: 'https://images.unsplash.com/photo-1543722530-d2c3201371e7?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '8', name: 'Aurora Punk #512', collection: 'Aurora Punks', imageUrl: 'https://images.unsplash.com/photo-1607462109225-6b64ae2dd3cb?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '9', name: 'Crystal Dragon #9', collection: 'Dragon Hoard', imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '10', name: 'Pixel Phantom #404', collection: 'Pixel Ghosts', imageUrl: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '11', name: 'Sol Surfer #188', collection: 'Sol Surfers', imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600&h=600' },
+  { id: '12', name: 'Degen Skull #666', collection: 'Skull Society', imageUrl: 'https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&q=80&w=600&h=600' },
 ];
 
 
